@@ -134,11 +134,15 @@ class Menu {
                             if (categorieen.contains(gekozenCategorie)) {
                                 System.out.println("Wat is het bedrag dat u wilt toevoegen aan categorie: " + gekozenCategorie);
                                 double gekozenBedrag = Double.parseDouble(userInput.nextLine());
-                                System.out.println("Als wat wilt u het opslaan?");
-                                String opslaan = userInput.nextLine();
-                                uitgavenLijst.voegUitgaveToe(new UitgaveCategorie(opslaan, gekozenBedrag, gekozenCategorie));
-                                totaleUitgaven = new UitgavenAnalyser().berekenTotaleUitgaven(alleUitgaven);
-                                break;
+                                if (totaleUitgaven + gekozenBedrag > budget.getBeschikbaarBudget()) {
+                                    System.out.println("Als wat wilt u het opslaan?");
+                                    String opslaan = userInput.nextLine();
+                                    uitgavenLijst.voegUitgaveToe(new UitgaveCategorie(opslaan, gekozenBedrag, gekozenCategorie));
+                                    totaleUitgaven = new UitgavenAnalyser().berekenTotaleUitgaven(alleUitgaven);
+                                    break;
+                                } else {
+                                    System.out.println("U bent over uw limiet gegaan, deze uitgave kan niet gedaan worden");
+                                }
                             } else {
                                 System.out.println("Ongeldige categorie. Kies een categorie uit de lijst.");
                             }
@@ -196,9 +200,3 @@ public class Main {
         new Menu(scanner, alleUitgaven, budget, totaleUitgaven, uitgavenLijst);
     }
 }
-
-
-
-
-
-
